@@ -1,0 +1,25 @@
+name: List Repositories
+
+on:
+  workflow_call:
+    secrets:
+      PAT_TOKEN:
+        description: 'Personal Access Token'
+        required: true
+
+jobs:
+  list-repos:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: List repositories
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
+        id: list-repos
+        run: |
+          curl -H "Authorization: token $GITHUB_TOKEN" \
+               -H "Accept: application/vnd.github.v3+json" \
+               https://api.github.com/orgs/DevSadMood/repos
